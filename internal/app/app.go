@@ -5,17 +5,25 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/anotherlusitano/goProject/internal/api"
 )
 
 type App struct {
-	Logger *log.Logger
+	Logger         *log.Logger
+	WorkoutHandler *api.WorkoutHandler
 }
 
 func NewApp() (*App, error) {
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 
+	// TODO: add store
+
+	workoutHandler := api.NewWorkoutHandler()
+
 	app := &App{
-		Logger: logger,
+		Logger:         logger,
+		WorkoutHandler: workoutHandler,
 	}
 
 	return app, nil
