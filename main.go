@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/anotherlusitano/goProject/internal/app"
+	"github.com/anotherlusitano/goProject/internal/routes"
 )
 
 func main() {
@@ -22,11 +23,10 @@ func main() {
 
 	app.Logger.Println("Setup is done!")
 
-	http.HandleFunc("/health", HealthCheck)
-
 	// Server config
 	var (
 		address      = fmt.Sprintf(":%d", port)
+		r            = routes.SetupRoutes(app)
 		idleTimeout  = time.Minute
 		readTimeout  = 10 * time.Second
 		writeTimeout = 30 * time.Second
@@ -34,6 +34,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:         address,
+		Handler:      r,
 		IdleTimeout:  idleTimeout,
 		ReadTimeout:  readTimeout,
 		WriteTimeout: writeTimeout,
@@ -45,8 +46,4 @@ func main() {
 	if err != nil {
 		app.Logger.Fatal(err)
 	}
-}
-
-func HealthCheck(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Status available")
 }
