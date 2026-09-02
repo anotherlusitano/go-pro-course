@@ -4,96 +4,60 @@ import (
 	"fmt"
 )
 
+type Person struct {
+	Name string
+	Age  int
+}
+
 func main() {
-	age := 30
+	person := Person{Name: "Maria", Age: 40}
+	fmt.Printf("Person: %+v\n", person)
 
-	if age >= 18 {
-		fmt.Println("You can drive!!!!!!")
-	} else if age >= 13 {
-		fmt.Println("You suck")
-	} else {
-		fmt.Println("You need more Danoninho")
+	// Anonymous struct
+	employee := struct {
+		name string
+		id   int
+	}{
+		name: "Bob",
+		id:   65,
 	}
 
-	day := "Friday"
-
-	switch day {
-	case "Monday":
-		fmt.Println("Start of the week")
-	case "Tuesday", "Wednesday", "Thursday":
-		fmt.Println("Midweek")
-	case "Friday":
-		fmt.Println("ITS OVER!!!!")
-		fallthrough
-	default:
-		fmt.Println("Rest for now")
+	type Address struct {
+		Street string
+		City   string
 	}
 
-	for i := 0; i < 5; i++ {
-		fmt.Println("Look: ", i)
+	type Contact struct {
+		Name    string
+		Address Address
+		Phone   string
 	}
 
-	counter := 0
-
-	for counter < 3 {
-		fmt.Println("Look again: ", counter)
-		counter++
+	contact := Contact{
+		Name: "Marcos",
+		Address: Address{
+			Street: "47 Main street",
+			City:   "Anytown",
+		},
 	}
 
-	iter := 0
-	for {
-		if iter > 3 {
-			break
-		}
-		iter++
-	}
+	fmt.Println(employee)
+	fmt.Println(contact)
 
-	numbers := [5]int{1, 2, 3, 4, 5}
+	fmt.Printf("Name before: %s\n", person.Name)
 
-	fmt.Printf("The array %v\n", numbers)
+	person.modifyPersonName("John Cena")
 
-	// allNumbers := numbers[:]
-	// firstThree := numbers[0:3]
+	fmt.Printf("Name after: %s\n", person.Name)
 
-	fruits := []string{"apple", "banana", "strawberry"}
-	fmt.Printf("these are my fruits %v\n", fruits)
-
-	fruits = append(fruits, "kiwi")
-	fmt.Printf("these are my fruits with kiwi %v\n", fruits)
-
-	fruits = append(fruits, "mango", "pineapple")
-	fmt.Printf("these are my fruits with more fruits%v\n", fruits)
-
-	moreFruits := []string{"watermelon", "melon"}
-	fruits = append(fruits, moreFruits...)
-	fmt.Printf("these are my fruits with more fruits%v\n", fruits)
-
-	for index, value := range numbers {
-		fmt.Printf("[%d] %d\n", index, value)
-	}
-
-	capitalCities := map[string]string{
-		"Portugal": "Lisbon",
-		"USA":      "Washington D.C.",
-		"UK":       "London",
-	}
-
-	capital, exists := capitalCities["Germany"]
-	if exists {
-		fmt.Println("this is the capital", capital)
-	} else {
-		fmt.Println("Does not exist")
-	}
-
-	delete(capitalCities, "USA")
-	fmt.Printf("this is new deleted map: %v\n", capitalCities)
+	x := 20
+	ptr := &x
+	fmt.Printf("value of x: %d and address of x %p\n", x, ptr)
+	*ptr = 30
+	fmt.Printf("value of new x: %d and address of x %p\n", x, ptr)
 }
 
-// private function
-func add(a int, b int) int {
-	return a + b
-}
-
-func calculateSumAndProduct(a, b int) (int, int) {
-	return a + b, a * b
+func (p *Person) modifyPersonName(name string) {
+	p.Name = name
+	fmt.Printf("Inside scope new name: %s\n", p.Name)
 }
