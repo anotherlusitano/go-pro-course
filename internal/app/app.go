@@ -1,20 +1,28 @@
 package app
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/anotherlusitano/goProject/internal/api"
+	"github.com/anotherlusitano/goProject/internal/store"
 )
 
 type App struct {
 	Logger         *log.Logger
 	WorkoutHandler *api.WorkoutHandler
+	DB             *sql.DB
 }
 
 func NewApp() (*App, error) {
+	pgDb, err := store.Open()
+	if err != nil {
+		return nil, err
+	}
+
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 
 	// TODO: add store
@@ -24,6 +32,7 @@ func NewApp() (*App, error) {
 	app := &App{
 		Logger:         logger,
 		WorkoutHandler: workoutHandler,
+		DB:             pgDb,
 	}
 
 	return app, nil

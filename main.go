@@ -21,6 +21,8 @@ func main() {
 		panic(err)
 	}
 
+	defer app.DB.Close()
+
 	app.Logger.Println("Setup is done!")
 
 	// Server config
