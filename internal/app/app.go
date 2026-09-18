@@ -9,6 +9,7 @@ import (
 
 	"github.com/anotherlusitano/goProject/internal/api"
 	"github.com/anotherlusitano/goProject/internal/store"
+	"github.com/anotherlusitano/goProject/migrations"
 )
 
 type App struct {
@@ -21,6 +22,11 @@ func NewApp() (*App, error) {
 	pgDb, err := store.Open()
 	if err != nil {
 		return nil, err
+	}
+
+	err = store.MigrateFS(pgDb, migrations.FS, ".")
+	if err != nil {
+		panic(err)
 	}
 
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
